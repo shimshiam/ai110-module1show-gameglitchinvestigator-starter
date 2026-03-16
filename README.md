@@ -51,8 +51,14 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📸 Demo
 
-![Final, fixed, winning game.](image.png)
+![alt text](image.png)
 
 ## 🚀 Stretch Features
 
-- [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
+Challenge 1:
+
+Test All Cases:
+![alt text](image-1.png)
+
+Test Edge Cases:
+![alt text](image-2.png)
