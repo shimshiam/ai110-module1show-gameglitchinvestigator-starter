@@ -17,6 +17,8 @@ def parse_guess(raw: str):
 
     Returns: (ok: bool, guess_int: int | None, error_message: str | None)
     """
+    # FIXME: Logic breaks here — function not implemented. Should parse raw string
+    # input into an int and return (ok, value, error_message).
     raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
 
 
@@ -26,9 +28,15 @@ def check_guess(guess, secret):
 
     outcome examples: "Win", "Too High", "Too Low"
     """
+    # FIXME: Should compare guess to
+    # secret (both ints) and return ("Win"/"Too High"/"Too Low", hint_message).
+    # Original app.py had swapped messages and a string-comparison bug on even attempts.
     raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
     """Update score based on outcome and attempt number."""
+    # FIXME: Logic breaks here — function not implemented. Also contains a logic
+    # error in the original: awards +5 points on even attempts for a wrong "Too High"
+    # guess. A wrong guess should never increase the score regardless of parity.
     raise NotImplementedError("Refactor this function from app.py into logic_utils.py")

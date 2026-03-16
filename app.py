@@ -48,9 +48,9 @@ def update_score(current_score: int, outcome: str, attempt_number: int):
             points = 10
         return current_score + points
 
+    # FIX: Was awarding +5 points on even attempts for a wrong "Too High" guess.
+    # A wrong guess should never increase the score, so always deduct 5.
     if outcome == "Too High":
-        if attempt_number % 2 == 0:
-            return current_score + 5
         return current_score - 5
 
     if outcome == "Too Low":
