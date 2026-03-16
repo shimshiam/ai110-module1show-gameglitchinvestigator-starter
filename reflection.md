@@ -8,11 +8,7 @@ Initially, the game is very simple and did not work. There were bugs with the th
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
-
-I used Claude. The AI suggested me various bug fizes and its thought processes behind its decisions. Calude suggested correctly implemented fixes for the difficulty class, reccomending to use wariables like high and low instead of a hard coded range. I verified this by testing the game and seeing how the range for difficulty is outputted. 
+I used Claude. The AI suggested me various bug fizes and its thought processes behind its decisions. Calude suggested correctly implemented fixes for the difficulty class, reccomending to use wariables like high and low instead of a hard coded range. I verified this by testing the game and seeing how the range for difficulty is outputted. One error Claude made was when fixing the attempts, the counter did not go down for the first attempt, but still counted as an attempt and would display 1 attempt left after all attempts were used. I checked this by seeing that even when 6 out of 6 attempts are used, since the counter doesn't go down for the first attempt, it still says 1 attempt left.
 
 ## 3. Debugging and testing your fixes
 
