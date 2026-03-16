@@ -1,7 +1,15 @@
 def get_range_for_difficulty(difficulty: str):
     """Return (low, high) inclusive range for a given difficulty."""
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
-
+    # FIXME: Function not implemented. Should return (low, high)
+    # Easy (1, 20), Normal (1, 50), Hard (1, 100).
+    if difficulty == "Easy":
+        return 1, 20
+    elif difficulty == "Normal":
+        return 1, 50
+    elif difficulty == "Hard":
+        return 1, 100
+    else:
+        raise ValueError("Invalid difficulty level")
 
 def parse_guess(raw: str):
     """
