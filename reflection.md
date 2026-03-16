@@ -25,7 +25,4 @@ The secret number kept changing because of how streamlit works. It reruns the en
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+One habit I want to reuse in future labs is asking the AI open ended questions and laos telling it to explain its thought process. Next time I would try to implement more of my own code wherever I can and then let AI verify or expand on it. This project changed how I observe code written by Ai and the way I can look out for certain faults which can hide within Ai generated code.
