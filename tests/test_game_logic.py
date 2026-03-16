@@ -1,8 +1,14 @@
 import sys
 from unittest.mock import MagicMock
 
-# Mock streamlit before importing app so module-level st.* calls don't crash pytest
-sys.modules["streamlit"] = MagicMock()
+# Mock streamlit before importing app so module-level st.* calls don't crash pytest.
+# Widgets that drive module-level logic must return sensible defaults.
+_st_mock = MagicMock()
+_st_mock.sidebar.selectbox.return_value = "Normal"
+_st_mock.session_state = MagicMock()
+# st.columns(n) must return n mock objects so tuple unpacking works
+_st_mock.columns.side_effect = lambda n: [MagicMock() for _ in range(n)]
+sys.modules["streamlit"] = _st_mock
 
 from app import check_guess, update_score, get_range_for_difficulty, parse_guess
 
@@ -143,3 +149,86 @@ def test_parse_guess_float_string_truncates_to_int():
     ok, value, _ = parse_guess("3.9")
     assert ok is True
     assert value == 3
+
+
+# ---------------------------------------------------------------------------
+# EDGE CASE 1: Negative numbers
+# parse_guess accepts "-5" as a valid integer (ok=True, value=-5).
+# The game then compares it against the secret and returns "Too Low" — which
+# is technically correct math, but -5 is outside every valid range (min is 1).
+# A future fix should reject guesses below the range low.
+# ---------------------------------------------------------------------------
+
+def test_parse_guess_negative_number_is_accepted():
+    # Current behaviour: negative numbers parse successfully.
+    # This documents that no range validation exists in parse_guess.
+    ok, value, _ = parse_guess("-5")
+    assert ok is True
+    assert value == -5
+
+def test_check_guess_negative_guess_returns_too_low():
+    # -5 is mathematically below any valid secret, so "Too Low" is returned.
+    # However the player should ideally be told their guess is out of range.
+    outcome, _ = check_guess(-5, 10)
+    assert outcome == "Too Low"
+
+def test_check_guess_negative_never_wins():
+    # A negative number should never equal a secret in the valid range (1+).
+    outcome, _ = check_guess(-1, 1)
+    assert outcome != "Win"
+
+
+# ---------------------------------------------------------------------------
+# EDGE CASE 2: Guess above the difficulty maximum
+# On Easy the range is 1–20, but parse_guess accepts "999" without complaint.
+# The game compares it and returns "Too High", wasting an attempt on a number
+# that was never in the pool. A future fix should validate against (low, high).
+# ---------------------------------------------------------------------------
+
+def test_parse_guess_above_easy_max_is_accepted():
+    # "999" is well above Easy's max of 20 but parse_guess allows it through.
+    ok, value, _ = parse_guess("999")
+    assert ok is True
+    assert value == 999
+
+def test_check_guess_above_max_returns_too_high():
+    # 999 is above the highest possible Easy secret (20), so must be "Too High".
+    outcome, _ = check_guess(999, 20)
+    assert outcome == "Too High"
+
+def test_check_guess_one_above_easy_max_cannot_win():
+    # 21 is just outside Easy's range — it can never equal the secret.
+    _, easy_high = get_range_for_difficulty("Easy")
+    outcome, _ = check_guess(easy_high + 1, easy_high)
+    assert outcome == "Too High"
+
+
+# ---------------------------------------------------------------------------
+# EDGE CASE 3: Decimal string that rounds to zero
+# "0.9" contains "." so parse_guess takes the float path: int(float("0.9")) = 0.
+# Zero is below the valid minimum of 1 for all difficulty levels, but the game
+# accepts it and returns "Too Low" without warning the player.
+# Similarly "-0.5" → int(-0.5) = 0 via Python's truncation-toward-zero.
+# ---------------------------------------------------------------------------
+
+def test_parse_guess_zero_point_nine_becomes_zero():
+    # int(float("0.9")) truncates to 0 — outside the valid range floor of 1.
+    ok, value, _ = parse_guess("0.9")
+    assert ok is True
+    assert value == 0
+
+def test_parse_guess_negative_decimal_becomes_zero():
+    # int(float("-0.5")) truncates toward zero → 0, same out-of-range result.
+    ok, value, _ = parse_guess("-0.5")
+    assert ok is True
+    assert value == 0
+
+def test_check_guess_zero_returns_too_low():
+    # 0 is below the minimum secret of 1, so always "Too Low".
+    outcome, _ = check_guess(0, 1)
+    assert outcome == "Too Low"
+
+def test_check_guess_zero_never_wins():
+    # No difficulty generates a secret of 0, so 0 should never be a winning guess.
+    outcome, _ = check_guess(0, 10)
+    assert outcome != "Win"
