@@ -12,12 +12,8 @@ I used Claude. The AI suggested me various bug fizes and its thought processes b
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
 
----
+When the calculation and the tracing of the expected output matched the actual output; I was able to tell it was fixed. Also, I tried my own implemntation aswell to compare which was btter. I ran tests on the attempts counter to fix the method and when it updated the counted, subracting from attempts left and adding to debug attempts made. This showed that my code had some imperfections even with AI. Claude helped design test cases. I prompted it to come up with various cases.
 
 ## 4. What did you learn about Streamlit and state?
 
@@ -25,7 +21,7 @@ I used Claude. The AI suggested me various bug fizes and its thought processes b
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 - What change did you make that finally gave the game a stable secret number?
 
----
+The secret number kept changing because of how streamlit works. It reruns the entire script whenever there is any new ineraction with the UI. Since the randint for the secret number wasn't being checked to see if it already had a stored value, it would generate a new value every time. If i were to explain Streamlit "reruns" and sessions states to a friend, I would tell them that its like losing your memory and starting with a blank slate every time you want to do something. The change I made to make secret number stabe is inserting an if statement which chekcs if "secret" is not alrady in the session state. If it isn't, only then does it generate a new secret number. This avoids it regenerating everytime there is interacton, and only regenerates on a new game.
 
 ## 5. Looking ahead: your developer habits
 
