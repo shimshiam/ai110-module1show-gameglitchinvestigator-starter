@@ -106,18 +106,25 @@ st.subheader("Make a guess")
 attempts_info = st.empty()
 debug_placeholder = st.empty()
 
-raw_guess = st.text_input(
-    "Enter your guess:",
-    key=f"guess_input_{difficulty}"
-)
+# FIX: Wrapped text input and Submit in st.form so both are batched into a
+# single rerun. Previously, clicking Submit after typing (without pressing Enter)
+# fired two reruns — one for the input losing focus, one for the button — causing
+# the button click to sometimes be missed and requiring a second click.
+with st.form("guess_form"):
+    raw_guess = st.text_input(
+        "Enter your guess:",
+        key=f"guess_input_{difficulty}"
+    )
+    submit = st.form_submit_button("Submit Guess 🚀")
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 with col1:
-    submit = st.button("Submit Guess 🚀")
-with col2:
     new_game = st.button("New Game 🔁")
-with col3:
-    show_hint = st.checkbox("Show hint", value=True)
+with col2:
+    # FIX: Added explicit key so checkbox state persists reliably across reruns.
+    # Without a key, widget state could reset mid-game causing the hint to silently
+    # not render even when the user expected it to be on.
+    show_hint = st.checkbox("Show hint", value=True, key="show_hint")
 
 if new_game:
     # FIX: Was only resetting attempts and secret. Missing status/score/history
