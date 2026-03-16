@@ -4,11 +4,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the secret number kept changing" or "the hints were backwards").
-
----
+Initially, the game is very simple and did not work. There were bugs with the the hints being wrong, higher and lower were swapped. Also, the game would not restart, attempts would remain the same, but secret number would change.
 
 ## 2. How did you use AI as a teammate?
 
@@ -16,7 +12,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
----
+I used Claude. The AI suggested me various bug fizes and its thought processes behind its decisions. Calude suggested correctly implemented fixes for the difficulty class, reccomending to use wariables like high and low instead of a hard coded range. I verified this by testing the game and seeing how the range for difficulty is outputted. 
 
 ## 3. Debugging and testing your fixes
 
